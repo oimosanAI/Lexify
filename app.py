@@ -8,7 +8,7 @@ import time
 # 1. ページ設定 & 初期化
 # ==========================================
 st.set_page_config(
-    page_title="Lexify | AI Catalog Search",
+    page_title="Lexify | Enterprise AI Search",
     page_icon="🔮",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -23,7 +23,7 @@ if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
 
 # ==========================================
-# 2. デザイン (タイトル見切れ完全修正版)
+# 2. デザイン (Final Ship - Royal Purple Title)
 # ==========================================
 st.markdown("""
 <style>
@@ -32,109 +32,116 @@ st.markdown("""
     
     html, body, [class*="css"] {
         font-family: 'Inter', "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
-        color: #e2e8f0;
+        color: #E2E8F0 !important;
     }
 
-    /* 背景: ディープ・バイオレットブラック */
+    /* --- 背景: 上品な暗めのプラチナグラデーション --- */
     .stApp {
-        background-color: #0B0A14; 
-        background-image: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #0B0A14 60%);
+        background-color: #0F172A;
+        background-image: radial-gradient(circle at 50% 0%, #1E293B 0%, #0F172A 60%);
         background-attachment: fixed;
     }
 
-    /* --- ヘッダー調整 (見切れ防止の最重要設定) --- */
+    /* ヘッダー調整 */
     .block-container {
-        padding-top: 5rem !important; /* 上部を強制的に空ける */
+        padding-top: 5rem !important;
         padding-bottom: 6rem !important;
     }
 
     /* --- サイドバー --- */
     [data-testid="stSidebar"] {
-        background-color: #0f0e16 !important;
-        border-right: 1px solid #2e2a45;
+        background-color: #111827 !important;
+        border-right: 1px solid #1F2937;
+        box-shadow: 5px 0 15px rgba(0,0,0,0.2);
     }
     [data-testid="stSidebar"] * {
-        color: #d8b4fe !important; /* 明るめの紫 */
+        color: #CBD5E1 !important;
+    }
+    [data-testid="stSidebar"] strong {
+        color: #A78BFA !important;
     }
     /* ファイルアップローダー */
     [data-testid="stFileUploader"] {
-        background-color: #171522;
+        background-color: #1F2937;
         border-radius: 10px;
         padding: 10px;
+        border: 1px dashed #374151;
     }
     [data-testid="stFileUploader"] small {
-        color: #a78bfa !important;
-        display: none; /* "Limit 200MB..." の英語を消す */
+        display: none;
     }
 
-    /* --- ボタン (Glossy Purple) --- */
+    /* --- ボタン (Royal Purple Gradient) --- */
     .stButton button {
         background: linear-gradient(135deg, #7C3AED 0%, #5B21B6 100%);
         color: white !important;
-        border: 1px solid #8B5CF6;
+        border: 1px solid #6D28D9;
         border-radius: 8px;
         font-weight: 600;
         padding: 0.6rem 1.2rem;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
     }
     .stButton button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(139, 92, 246, 0.6);
-        border-color: #C4B5FD;
+        box-shadow: 0 10px 20px -3px rgba(124, 58, 237, 0.4);
+        border-color: #A78BFA;
     }
 
     /* --- 入力フォーム --- */
     .stTextInput input, .stPasswordInput input {
-        background-color: #1a1825 !important;
-        color: white !important;
-        border: 1px solid #4c1d95;
+        background-color: #1F2937 !important;
+        color: #F8FAFC !important;
+        border: 1px solid #374151;
         border-radius: 8px;
     }
     .stTextInput input:focus, .stPasswordInput input:focus {
-        border-color: #a78bfa;
-        box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.3);
+        border-color: #A78BFA;
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
     }
-    
-    /* チャット入力欄 */
+    label {
+        color: #CBD5E1 !important;
+    }
     .stChatInput {
-        background-color: #1a1825 !important;
+        background-color: #1F2937 !important;
         border-radius: 12px;
-        border: 1px solid #4c1d95;
+        border: 1px solid #374151;
     }
 
-    /* --- タイトル修正 (修正強化版) --- */
+    /* --- タイトル修正 (ここを変更しました！) --- */
     .main-title {
         font-size: 3.5rem; 
         font-weight: 800;
-        letter-spacing: -0.02em;
-        background: -webkit-linear-gradient(0deg, #E9D5FF, #8B5CF6);
+        letter-spacing: -0.03em;
+        /* 修正: ロゴに合わせた鮮やかで深い紫のグラデーション */
+        background: -webkit-linear-gradient(0deg, #C084FC, #7C3AED);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         margin-bottom: 0.5rem;
         margin-top: 0 !important;
-        
-        /* 光彩が見切れないように行高と余白をたっぷりとる */
-        line-height: 1.6 !important; 
+        line-height: 1.4 !important; 
         padding-top: 10px !important;
         padding-bottom: 20px !important;
-        
-        text-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
+        /* 修正: 光彩も強く鮮やかに */
+        text-shadow: 0 0 40px rgba(124, 58, 237, 0.5);
     }
     .sub-title {
         font-size: 1.1rem;
-        color: #a78bfa;
+        color: #94A3B8;
         margin-bottom: 3rem;
         margin-top: -10px;
+        font-weight: 500;
     }
 
     /* --- ヒーローセクション --- */
     .hero-container {
         text-align: center;
         padding: 4rem 2rem;
-        background: rgba(124, 58, 237, 0.05);
-        border-radius: 20px;
-        border: 1px solid rgba(124, 58, 237, 0.2);
+        background: rgba(30, 41, 59, 0.5);
+        backdrop-filter: blur(10px);
+        border-radius: 24px;
+        border: 1px solid rgba(148, 163, 184, 0.1);
+        box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
         margin-bottom: 2rem;
         margin-top: 1rem;
     }
@@ -142,28 +149,28 @@ st.markdown("""
         font-size: 5rem;
         margin-bottom: 1rem;
         display: inline-block;
-        filter: drop-shadow(0 0 20px rgba(124, 58, 237, 0.6));
+        filter: drop-shadow(0 10px 20px rgba(124, 58, 237, 0.4));
     }
 
     /* --- ログインカード --- */
     .login-container {
-        background: rgba(17, 16, 25, 0.8);
+        background: rgba(30, 41, 59, 0.7);
         backdrop-filter: blur(12px);
         padding: 3rem;
-        border-radius: 20px;
-        border: 1px solid #4C1D95;
-        box-shadow: 0 0 60px rgba(124, 58, 237, 0.2);
+        border-radius: 24px;
+        border: 1px solid rgba(139, 92, 246, 0.3);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
         text-align: center;
     }
     
     /* チャットメッセージ */
     [data-testid="stChatMessage"] {
         background-color: transparent;
-        border-bottom: 1px solid #2e2a45;
+        border-bottom: 1px solid #1F2937;
         padding: 1.5rem 0;
     }
     [data-testid="stChatMessageAvatarBackground"] {
-        background-color: #5B21B6 !important;
+        background-color: #6D28D9 !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -190,7 +197,7 @@ if not api_key and os.getenv("GOOGLE_API_KEY"):
     api_key = os.getenv("GOOGLE_API_KEY")
 
 # ==========================================
-# 4. ログイン認証 (日本語版)
+# 4. ログイン認証
 # ==========================================
 SYSTEM_PASSWORD = "lexify-demo" 
 
@@ -200,8 +207,8 @@ if not st.session_state.authenticated:
         st.markdown("""
         <div style="height: 100px;"></div>
         <div class="login-container">
-            <h1 style="color:white; font-size: 3.5rem; margin:0; font-weight:800; text-shadow: 0 0 20px #7C3AED;">🔮 Lexify</h1>
-            <p style="color:#a78bfa; margin-top:10px; font-size:1.1rem;">専門商社向け AIカタログ検索プラットフォーム</p>
+            <h1 style="color:#F8FAFC; font-size: 3.5rem; margin:0; font-weight:800; letter-spacing:-0.03em; text-shadow: 0 0 30px rgba(124, 58, 237, 0.6);">🔮 Lexify</h1>
+            <p style="color:#94A3B8; margin-top:10px; font-size:1.1rem; font-weight:500;">専門商社向け AIカタログ検索プラットフォーム</p>
         </div>
         """, unsafe_allow_html=True)
         
@@ -232,9 +239,10 @@ with st.sidebar:
     
     st.markdown("#### ⚙️ 2. システム状態")
     if st.session_state.chat_session:
-        st.markdown('🟣 <span style="color:#d8b4fe"><b>AIエンジン: 稼働中</b></span>', unsafe_allow_html=True)
+        # ここも色を合わせて鮮やかに
+        st.markdown('🟣 <span style="color:#C084FC"><b>AIエンジン: 稼働中</b></span>', unsafe_allow_html=True)
     elif api_key:
-        st.markdown('🟡 <span style="color:#facc15"><b>準備完了</b></span>', unsafe_allow_html=True)
+        st.markdown('🟡 <span style="color:#FBBF24"><b>準備完了</b></span>', unsafe_allow_html=True)
     else:
         st.error("🔴 設定エラー")
         
@@ -254,10 +262,10 @@ except Exception as e:
     st.stop()
 
 # ==========================================
-# 6. メインロジック (UI改善版)
+# 6. メインロジック
 # ==========================================
 
-# タイトル表示 (見切れ防止済)
+# タイトル
 st.markdown('<div class="main-title">Lexify AI Assistant</div>', unsafe_allow_html=True)
 st.markdown('<div class="sub-title">Powered by <b>Gemini 3.0 Vision</b> | 専門商社・技術営業のためのAIパートナー</div>', unsafe_allow_html=True)
 
@@ -306,16 +314,16 @@ def generate_response(prompt):
         except Exception as e:
             st.error(f"API Error: {e}")
 
-# --- ヒーローセクション (会話履歴がない時だけ表示) ---
+# --- ヒーローセクション ---
 if not st.session_state.messages and not uploaded_files:
     st.markdown("""
     <div class="hero-container">
         <div class="hero-icon">🔮</div>
-        <h2 style="color:white; margin-bottom:1rem;">Lexifyへようこそ</h2>
-        <p style="color:#a78bfa; font-size:1.1rem;">
+        <h2 style="color:#F8FAFC; margin-bottom:1rem; font-weight:800;">Lexifyへようこそ</h2>
+        <p style="color:#CBD5E1; font-size:1.1rem; line-height:1.6;">
             サイドバーからPDFカタログをアップロードして、<br>
             「AIエンジンを起動」ボタンを押してください。<br>
-            専門知識を持ったAIが、スペック比較や型番検索をサポートします。
+            <strong>Gemini 3.0 Vision</strong> が、図面やスペック表を正確に読み取ります。
         </p>
     </div>
     """, unsafe_allow_html=True)
