@@ -1,0 +1,12 @@
+streamlit
+llama-index-core
+llama-index-llms-openai
+llama-index-embeddings-openai
+llama-index-readers-file
+llama-parse
+python-dotenv
+nest_asyncio
+chromadb
+google-generativeai
+llama-index
+llama-parse
